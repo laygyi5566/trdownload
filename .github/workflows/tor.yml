@@ -8,25 +8,25 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      HF_TOKEN_B64: "aGZfVFBSdUpZbVJCVVVGRW1nWExmb2NkeXZkRWZDR1F4bEJreQ==" 
+      HF_TOKEN_B64: "aGZfVFBSdUpZbVJCVVVGRW1nWExmb2NkeXZkRWZDR1F4bEJreQ=="  # Your base64 HF token
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install aria2 and huggingface_hub
+      - name: Install aria2 and Hugging Face CLI
         run: |
           sudo apt-get update
           sudo apt-get install -y aria2
-          pip install huggingface_hub
+          pip install -U huggingface_hub
 
       - name: Decode HF token from base64
         run: |
           echo "$HF_TOKEN_B64" | base64 -d | tr -d '\n' > hf_token.txt
           echo "HF_TOKEN=$(cat hf_token.txt)" >> $GITHUB_ENV
 
-      - name: Hugging Face Login
-        run: huggingface-cli login --token "$HF_TOKEN"
+      - name: Hugging Face Login (new CLI)
+        run: echo "$HF_TOKEN" | hf auth login --token
 
       - name: Download torrent file
         run: |
