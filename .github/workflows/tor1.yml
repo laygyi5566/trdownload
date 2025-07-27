@@ -28,12 +28,12 @@ jobs:
       - name: Hugging Face Login (new CLI)
         run: hf auth login --token "$HF_TOKEN"
 
-      - name: Fetch magnet link from GitHub raw and download torrent
+      - name: Fetch 2nd line as magnet link and download torrent
         run: |
-          MAGNET=$(curl -s https://raw.githubusercontent.com/Bogyi2024/magnet/refs/heads/main/magnet.txt)
+          MAGNET=$(curl -s https://pastebin.com/raw/DeNkWcy5 | sed -n '2p')
           echo "Magnet link: $MAGNET"
 
-          mkdir -p downloads          
+          mkdir -p downloads
           aria2c --dir=downloads --seed-time=0 "$MAGNET"
 
       - name: Upload to Hugging Face Hub
