@@ -1,4 +1,4 @@
-name: Upload Torrent to Hugging Face - Clean OS Version
+name: Upload Torrent to Hugging Face 
 
 on:
   workflow_dispatch:
