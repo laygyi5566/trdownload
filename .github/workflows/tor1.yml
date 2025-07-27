@@ -20,14 +20,13 @@ jobs:
           sudo apt-get install -y aria2
           pip install -U huggingface_hub
 
-- name: Decode HF token from base64
-  run: |
-    echo "$HF_TOKEN_B64" | base64 -d | tr -d '\n' > hf_token.txt
-    echo "HF_TOKEN=$(cat hf_token.txt)" >> $GITHUB_ENV
+      - name: Decode HF token from base64
+        run: |
+          echo "$HF_TOKEN_B64" | base64 -d | tr -d '\n' > hf_token.txt
+          echo "HF_TOKEN=$(cat hf_token.txt)" >> $GITHUB_ENV
 
-- name: Hugging Face Login (new CLI)
-  run: hf auth login --token "$HF_TOKEN"
-
+      - name: Hugging Face Login (new CLI)
+        run: hf auth login --token "$HF_TOKEN"
 
       - name: Download torrent file
         run: |
