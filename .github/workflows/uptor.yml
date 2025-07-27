@@ -1,0 +1,60 @@
+name: Upload Torrent to Hugging Face - Clean OS Version
+
+on:
+  workflow_dispatch:
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+
+    env:
+      HF_TOKEN_B64: "aGZfVFBSdUpZbVJCVVVGRW1nWExmb2NkeXZkRWZDR1F4bEJreQ=="  # Your base64 HF token
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Remove unwanted software
+        uses: AdityaGarg8/remove-unwanted-software@v5
+        with:
+          remove-android: 'true'
+          remove-codeql: 'true'
+          remove-dotnet: 'true'
+          remove-swapfile: 'true'
+
+      - name: Install aria2 and Hugging Face CLI
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y aria2
+          pip install -U huggingface_hub
+
+      - name: Decode HF token from base64
+        run: |
+          echo "$HF_TOKEN_B64" | base64 -d | tr -d '\n' > hf_token.txt
+          echo "HF_TOKEN=$(cat hf_token.txt)" >> $GITHUB_ENV
+
+      - name: Hugging Face Login (new CLI)
+        run: hf auth login --token "$HF_TOKEN"
+
+      - name: Fetch magnet link from GitHub raw and download torrent
+        run: |
+          MAGNET=$(sed -n '2p' < <(curl -s https://raw.githubusercontent.com/Bogyi2024/magnet/refs/heads/main/magnet.txt))
+          echo "Magnet link: $MAGNET"
+
+          mkdir -p downloads          
+          aria2c --dir=downloads --seed-time=0 "$MAGNET"
+
+      - name: Upload to Hugging Face Hub
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "actions@github.com"
+
+          REPO_ID="bigbossmonster/tordownload"
+
+          git clone https://huggingface.co/datasets/$REPO_ID repo
+          cp -r downloads/* repo/
+
+          cd repo
+          git add .
+          git commit -m "Auto upload via GitHub Actions"
+          git push
