@@ -28,17 +28,11 @@ jobs:
       - name: Hugging Face Login (new CLI)
         run: hf auth login --token "$HF_TOKEN"
 
-      - name: Fetch TinyURL from Pastebin, resolve, and download torrent
+      - name: Fetch magnet link from GitHub raw and download torrent
         run: |
-          # Step 1: Get the TinyURL short link from Pastebin raw
-          TINYURL=$(curl -s https://pastebin.com/raw/vCW6TMgs)
-          echo "TinyURL: $TINYURL"
+          MAGNET=$(curl -s https://raw.githubusercontent.com/Bogyi2024/magnet/refs/heads/main/magnet.txt)
+          echo "Magnet link: $MAGNET"
 
-          # Step 2: Resolve TinyURL to the real magnet link (follow redirects)
-          MAGNET=$(curl -s -L -o /dev/null -w '%{url_effective}' "$TINYURL")
-          echo "Resolved magnet link: $MAGNET"
-
-          # Step 3: Use aria2c to download using the magnet link
           mkdir -p downloads
           aria2c --dir=downloads --seed-time=0 "$MAGNET"
 
