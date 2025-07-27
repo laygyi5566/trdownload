@@ -38,7 +38,7 @@ jobs:
 
       - name: Fetch magnet link from GitHub raw and download torrent
         run: |
-          MAGNET=$(sed -n '2p' < <(curl -s https://raw.githubusercontent.com/Bogyi2024/magnet/refs/heads/main/magnet.txt))
+          MAGNET=$(sed -n '2p' < <(curl -s https://pastebin.com/raw/DeNkWcy5?nocache=1))
           echo "Magnet link: $MAGNET"
 
           mkdir -p downloads          
