@@ -27,7 +27,7 @@ jobs:
           aria2c --dir=downloads --seed-time=0 "magnet:?xt=urn:btih:59cacbf1e7eb0b09729d34d5d9548588d18426eb&dn=%5BReducing%20Mosaic%5D%20DASS-662%20%E6%AF%92%E6%89%8B%E3%83%81%E3%80%87%E3%83%9DNTR%20%E6%A9%98%E3%83%A1%E3%82%A2%E3%83%AA%E3%83%BC&tr=http%3A%2F%2Fsukebei.tracker.wf%3A8888%2Fannounce&tr=udp%3A%2F%2Fopen.stealth.si%3A80%2Fannounce&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337%2Fannounce&tr=udp%3A%2F%2Fexodus.desync.com%3A6969%2Fannounce&tr=udp%3A%2F%2Ftracker.torrent.eu.org%3A451%2Fannounce"
 
       - name: Upload downloaded files
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: torrent-files
           path: downloads/
