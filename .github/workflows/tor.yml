@@ -1,0 +1,28 @@
+name: Torrent Download with aria2c
+
+on:
+  workflow_dispatch:
+
+jobs:
+  download-torrent:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout (optional)
+        uses: actions/checkout@v3
+
+      - name: Install aria2
+        run: sudo apt-get update && sudo apt-get install -y aria2
+
+      - name: Download with aria2c (magnet link)
+        run: |
+          aria2c --dir=downloads --seed-time=0 "magnet:?xt=urn:btih:YOUR_MAGNET_HASH_HERE"
+
+      # Or use .torrent file
+      # - name: Download .torrent file
+      #   run: wget -O file.torrent "https://example.com/some.torrent"
+      #
+      # - name: Download using .torrent
+      #   run: aria2c --dir=downloads --seed-time=0 file.torrent
+
+      - name: Show files
+        run: ls -R downloads
