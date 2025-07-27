@@ -34,7 +34,7 @@ jobs:
           echo "Magnet link: $MAGNET"
 
           mkdir -p downloads          
-          aria2c --dir=downloads --seed-time=0 --max-file-name-length=100 "$MAGNET"
+          aria2c --dir=downloads --seed-time=0 "$MAGNET"
 
       - name: Upload to Hugging Face Hub
         run: |
